@@ -46,21 +46,82 @@ body {
     gap: 20px;
     width: 100%;
     box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.07), 0px 41.7776px 33.4221px rgba(0, 0, 0, 0.0503198), 0px 22.3363px 17.869px rgba(0, 0, 0, 0.0417275), 0px 12.5216px 10.0172px rgba(0, 0, 0, 0.035), 0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0282725), 0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0196802);
-    /* 确保容器占满宽度 */
 }
 
 .question-column {
     display: flex;
     flex-direction: column;
-    gap: 0px;
     min-width: 0;
-    /* 防止内容溢出 */
+}
+
+/* 当题目数量小于25时的样式 */
+.question-column.less-than-25 {
+    height: 1000px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* 第一个题目固定在顶部 */
+.question-column.less-than-25 .question:first-child {
+    margin-bottom: auto;
+}
+
+/* 中间的题目均匀分布 */
+.question-column.less-than-25 .question:not(:first-child):not(:last-child) {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* 最后一个题目不贴底 */
+.question-column.less-than-25 .question:last-child {
+    margin-top: auto;
+    margin-bottom: 100px; /* 距离底部的距离 */
+}
+
+/* 移除之前可能冲突的样式 */
+.question-column.less-than-25::after {
+    content: none;
+}
+
+/* 当题目数量小于25时，为每个题目添加均匀的间距 */
+.question-column.less-than-25 .question:not(:first-child) {
+    margin-top: auto;
+}
+
+/* 添加伪元素在列的底部创建空间 */
+.question-column.less-than-25::after {
+    content: "";
+    display: block;
+    height: 20px; /* 底部空白高度 */
+}
+
+/* 当题目数量小于25时，第一个题目之后的所有题目添加上边距 */
+.question-column.less-than-25 .question:not(:first-child) {
+    margin-top: auto;
 }
 
 .question {
     margin: 5px 0;
     white-space: nowrap;
-    /* 防止题目换行 */
+    text-align: center;
+}
+
+/* 移除之前的滚动相关样式 */
+.column {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.questions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .container {
@@ -257,6 +318,26 @@ input[type="number"]:focus {
     border-radius: 3px;
 }
 
+.column {
+    flex: 1;
+    padding: 20px;
+    min-height: 1000px;
+    max-height: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.questions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
 @media print {
     @page {
         size: A4;
@@ -415,4 +496,32 @@ input[type="number"]:focus {
 
 .copy-link:hover {
     color: #40a9ff;
+}
+
+
+/* 当题目数量小于25时的样式 */
+.question-column.less-than-25 {
+    height: 1000px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+/* 清理冲突的样式 */
+.question-column.less-than-25 .question:first-child,
+.question-column.less-than-25 .question:last-child,
+.question-column.less-than-25 .question:not(:first-child):not(:last-child) {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+/* 当题目数量小于25时，为每个题目添加均匀的间距 */
+.question-column.less-than-25 .question:not(:first-child):not(.empty-question) {
+    margin-top: auto;
+}
+
+/* 空白题目元素样式 */
+.empty-question {
+    height: 20px;
+    visibility: hidden;
 }

@@ -41,6 +41,8 @@ function generateQuestions() {
             }
         }
 
+
+
         // 保存设置到localStorage
         saveSettings();
 
@@ -49,7 +51,9 @@ function generateQuestions() {
         for (let col = 1; col <= 4; col++) {
             try {
                 const settings = getColumnSettings(col);
-                const questions = generateColumnQuestions(settings, 25);
+                // 获取每列设置的题目数量
+                const questionCount = parseInt(document.querySelector(`#settings${col} .question-count`).value) || 25;
+                const questions = generateColumnQuestions(settings, questionCount);
                 if (questions.length > 0) {
                     displayQuestions(questions, col);
                 } else if (!hasError) {
@@ -70,6 +74,215 @@ function generateQuestions() {
         alert(error.message);
     }
 }
+
+// 添加全局数量设置函数
+function applyGlobalCount() {
+    // 获取全局题目数量输入框
+    const globalCountInput = document.querySelector('#settingsGlobal .question-count') || 
+                            document.querySelector('#globalQuestionCount');
+    
+    if (!globalCountInput) {
+        console.error('找不到全局题目数量输入框');
+        return;
+    }
+    
+    const globalCount = globalCountInput.value;
+    console.log('应用全局题目数量:', globalCount);
+    
+    if (!globalCount) {
+        console.warn('全局题目数量为空，使用默认值25');
+        globalCount = 25;
+    }
+    
+    // 应用到所有列
+    const countInputs = document.querySelectorAll('.column-settings .question-count');
+    countInputs.forEach(input => {
+        input.value = globalCount;
+        console.log(`设置列题目数量为: ${globalCount}`);
+    });
+    
+    // 保存设置
+    if (typeof saveSettings === 'function') {
+        saveSettings();
+    }
+}
+
+// 添加全局运算形式设置函数
+function applyGlobalOperationType() {
+    // 获取全局运算形式选择框
+    const globalOperationType = document.querySelector('#settingsGlobal .operation-type');
+    if (!globalOperationType) {
+        console.error('找不到全局运算形式选择框');
+        return;
+    }
+    
+    const operationType = globalOperationType.value;
+    console.log('应用全局运算形式:', operationType);
+    
+    if (!operationType) {
+        console.warn('全局运算形式为空，使用默认值simple');
+        operationType = 'simple';
+        globalOperationType.value = 'simple';
+    }
+    
+    // 应用到所有列
+    const operationTypeSelects = document.querySelectorAll('.column-settings .operation-type');
+    operationTypeSelects.forEach(select => {
+        select.value = operationType;
+        console.log(`设置列运算形式为: ${operationType}`);
+        
+        // 触发 change 事件以更新相关UI
+        const event = new Event('change');
+        select.dispatchEvent(event);
+    });
+    
+    // 保存设置
+    if (typeof saveSettings === 'function') {
+        saveSettings();
+    }
+}
+
+// 添加全局设置应用函数，这个函数会被HTML中的按钮调用
+function applyGlobalSettings() {
+    console.log('应用全局设置');
+    
+    // 获取全局运算形式
+    const globalOperationType = document.querySelector('#settingsGlobal .operation-type');
+    if (globalOperationType && globalOperationType.value) {
+        console.log('应用全局运算形式:', globalOperationType.value);
+        
+        // 保存全局运算形式到localStorage
+        try {
+            const savedSettings = localStorage.getItem('calculationSettings') || '{}';
+            const settings = JSON.parse(savedSettings);
+            settings.globalOperationType = globalOperationType.value;
+            localStorage.setItem('calculationSettings', JSON.stringify(settings));
+            console.log('全局运算形式已保存到localStorage');
+        } catch (e) {
+            console.error('保存全局运算形式到localStorage失败:', e);
+        }
+        
+        // 应用到所有列
+        const operationTypeSelects = document.querySelectorAll('.column-settings:not(#settingsGlobal) .operation-type');
+        operationTypeSelects.forEach(select => {
+            select.value = globalOperationType.value;
+            console.log(`设置列运算形式为: ${globalOperationType.value}`);
+            
+            // 触发 change 事件以更新相关UI
+            const event = new Event('change');
+            select.dispatchEvent(event);
+        });
+    } else {
+        console.warn('全局运算形式为空或未找到，使用默认值simple');
+        if (globalOperationType) {
+            globalOperationType.value = 'simple';
+            // 触发change事件
+            const event = new Event('change');
+            globalOperationType.dispatchEvent(event);
+        }
+    }
+    
+    // 应用全局题目数量
+    const globalCountInput = document.querySelector('#settingsGlobal .question-count') || 
+                            document.querySelector('#globalQuestionCount');
+    
+    if (globalCountInput && globalCountInput.value) {
+        console.log('应用全局题目数量:', globalCountInput.value);
+        
+        // 应用到所有列
+        const countInputs = document.querySelectorAll('.column-settings:not(#settingsGlobal) .question-count');
+        countInputs.forEach(input => {
+            input.value = globalCountInput.value;
+            console.log(`设置列题目数量为: ${globalCountInput.value}`);
+        });
+    } else {
+        console.warn('全局题目数量为空或未找到');
+    }
+    
+    // 保存设置
+    if (typeof saveSettings === 'function') {
+        saveSettings();
+    } else {
+        console.error('saveSettings函数未定义');
+    }
+}
+
+// 在页面加载完成后初始化列样式和添加事件监听器
+document.addEventListener('DOMContentLoaded', function() {
+    // 初始化列样式
+    if (typeof initializeColumns === 'function') {
+        initializeColumns();
+    }
+    
+    // 确保全局运算形式选择框有默认值
+    const globalOperationType = document.querySelector('#settingsGlobal .operation-type');
+    if (globalOperationType) {
+        console.log('页面加载时全局运算形式:', globalOperationType.value);
+        
+        // 如果值为空，设置默认值
+        if (!globalOperationType.value) {
+            console.log('设置全局运算形式默认值为simple');
+            globalOperationType.value = 'simple';
+            // 触发change事件
+            const event = new Event('change');
+            globalOperationType.dispatchEvent(event);
+        }
+        
+        // 从localStorage加载全局运算形式设置
+        const savedSettings = localStorage.getItem('calculationSettings');
+        if (savedSettings) {
+            try {
+                const settings = JSON.parse(savedSettings);
+                if (settings.globalOperationType) {
+                    console.log('从localStorage加载全局运算形式:', settings.globalOperationType);
+                    globalOperationType.value = settings.globalOperationType;
+                    // 触发change事件
+                    const event = new Event('change');
+                    globalOperationType.dispatchEvent(event);
+                }
+            } catch (e) {
+                console.error('解析localStorage中的设置失败:', e);
+            }
+        }
+    } else {
+        console.error('找不到全局运算形式选择框');
+    }
+    
+    // 修复ui.js中的applyGlobalSettingsToPanel函数
+    if (typeof applyGlobalSettingsToPanel === 'function') {
+        const originalApplyGlobalSettingsToPanel = applyGlobalSettingsToPanel;
+        window.applyGlobalSettingsToPanel = function(globalSettings) {
+            // 确保globalSettings中的所有范围都有默认值
+            const defaultSettings = {
+                operationType: 'simple',
+                aRange: { min: 1, max: 100 },
+                bRange: { min: 1, max: 9 },
+                cRange: { min: 1, max: 999 },
+                dRange: { min: 1, max: 999 },
+                integersOnly: true,
+                reversePercent: 20,
+                operators: ['+', '-'],
+                operators2: ['+', '-']
+            };
+            
+            // 合并默认设置和传入的设置
+            globalSettings = Object.assign({}, defaultSettings, globalSettings || {});
+            
+            // 确保所有范围都存在
+            globalSettings.aRange = globalSettings.aRange || defaultSettings.aRange;
+            globalSettings.bRange = globalSettings.bRange || defaultSettings.bRange;
+            globalSettings.cRange = globalSettings.cRange || defaultSettings.cRange;
+            globalSettings.dRange = globalSettings.dRange || defaultSettings.dRange;
+            
+            // 调用原始函数
+            try {
+                originalApplyGlobalSettingsToPanel(globalSettings);
+            } catch (e) {
+                console.error('应用全局设置时出错:', e);
+            }
+        };
+    }
+});
 
 function generateColumnQuestions(settings, count) {
     const questions = [];
@@ -368,22 +581,54 @@ function calculateExpression(expr) {
     return 0;
 }
 
-// 修改显示题目的函数
+// 修改显示题目的函数，隐藏大小比较的答案但保留圆形样式
+// 修改显示题目的函数，在末尾添加空白元素
 function displayQuestions(questions, col) {
     const column = document.querySelector(`#column${col}`);
-    column.innerHTML = questions.map(q => {
-        // 检查是否为大小比较题目
-        if (typeof q === 'object' && q.left && q.right && q.compareSymbol) {
-            // 格式化大小比较题目
-            const leftText = formatExpression(q.left);
-            const rightText = formatExpression(q.right);
-            return `<div class="question">${leftText} <span class="compare-symbol"></span> ${rightText}</div>`;
-        } else {
-            // 普通题目直接显示
-            return `<div class="question">${q}</div>`;
+    if (column) {
+        // 生成题目HTML
+        let htmlContent = questions.map(q => {
+            // 检查是否为大小比较题目对象
+            if (typeof q === 'object' && q.left && q.right && q.compareSymbol) {
+                // 格式化大小比较题目，使用空的比较符号圆圈
+                let leftExpr = typeof q.left === 'object' ? formatExpression(q.left) : q.left;
+                let rightExpr = typeof q.right === 'object' ? formatExpression(q.right) : q.right;
+                return `<div class="question">${leftExpr} <span class="compare-symbol"></span> ${rightExpr}</div>`;
+            } else {
+                // 普通算术题目
+                return `<div class="question">${q}</div>`;
+            }
+        }).join('');
+        
+        // 如果题目数量小于25，添加多个空白元素在末尾
+        if (questions.length < 25) {
+            // 添加一个空白元素作为占位符
+            htmlContent += `<div class="question spacer-question">&nbsp;</div>`;
         }
-    }).join('');
+        
+        column.innerHTML = htmlContent;
+        
+        // 获取正确的父元素并添加类名
+        const questionColumn = column.closest('.question-column');
+        if (questionColumn) {
+            questionColumn.classList.toggle('less-than-25', questions.length < 25);
+        }
+    }
 }
+
+// 添加页面加载时的初始化函数
+function initializeColumns() {
+    for (let col = 1; col <= 4; col++) {
+        const questionCount = parseInt(document.querySelector(`#settings${col} .question-count`).value) || 25;
+        const questionColumn = document.querySelector(`#column${col}`).closest('.question-column');
+        if (questionColumn) {
+            questionColumn.classList.toggle('less-than-25', questionCount < 25);
+        }
+    }
+}
+
+// 在页面加载完成后初始化列样式
+document.addEventListener('DOMContentLoaded', initializeColumns);
 
 // 添加格式化表达式的函数
 function formatExpression(expr) {
