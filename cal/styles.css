@@ -1,0 +1,418 @@
+body {
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 20px;
+    background-color: #f5f5f5;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+#settingsGlobal {
+    border: none;
+}
+
+.column-settings-row {
+    padding: 4px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: nowrap;
+    /* 防止换行 */
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+
+#settings1,
+#settings2,
+#settings3,
+#settings4 {
+    flex: 1;
+    border: none;
+}
+
+.column-settings {
+    background: white;
+    border: 1px solid #f0f0f0;
+    padding: 16px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    flex: 1;
+    /* 平均分配空间 */
+    min-width: 0;
+    /* 防止内容溢出 */
+}
+
+.questions-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.07), 0px 41.7776px 33.4221px rgba(0, 0, 0, 0.0503198), 0px 22.3363px 17.869px rgba(0, 0, 0, 0.0417275), 0px 12.5216px 10.0172px rgba(0, 0, 0, 0.035), 0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0282725), 0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0196802);
+    /* 确保容器占满宽度 */
+}
+
+.question-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    min-width: 0;
+    /* 防止内容溢出 */
+}
+
+.question {
+    margin: 5px 0;
+    white-space: nowrap;
+    /* 防止题目换行 */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.settings-panel {
+    font-size: 13px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.column-settings {
+    background: white;
+    border: 1px solid #f0f0f0;
+    padding: 4px 0px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+/* .column-settings:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+} */
+.column-settings h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+}
+
+input[type="number"] {
+    border: 1px solid #ececec;
+    border-radius: 2px;
+    padding: 4px 8px;
+    transition: all 0.3s;
+    margin-bottom: 1px;
+}
+
+input[type="number"]:hover {
+    border-color: #40a9ff;
+}
+
+input[type="number"]:focus {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    outline: none;
+}
+
+.primary-btn {
+    background: #1890ff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 12px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* .primary-btn:hover {
+        background: #40a9ff;
+    } */
+
+.primary-btn:active {
+    background: #096dd9;
+}
+
+/* 添加蚂蚁设计风格的按钮样式 */
+/* 删除原有的 button 样式，替换为以下内容 */
+.ant-btn {
+    background: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    color: rgba(0, 0, 0, 0.85);
+    padding: 4px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ant-btn:hover {
+    color: #40a9ff;
+    border-color: #40a9ff;
+    background: white;
+}
+
+.ant-btn:active {
+    color: #096dd9;
+    border-color: #096dd9;
+}
+
+.ant-btn i {
+    font-size: 14px;
+}
+
+.ant-btn.primary-btn {
+    background: #1890ff;
+    border: none;
+    color: white;
+}
+
+.ant-btn.primary-btn:hover {
+    background: #40a9ff;
+    color: white;
+}
+
+.ant-btn.primary-btn:active {
+    background: #096dd9;
+    color: white;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.ant-btn:hover {
+    color: #40a9ff;
+    border-color: #40a9ff;
+    background: white;
+}
+
+.ant-btn:active {
+    color: #096dd9;
+    border-color: #096dd9;
+}
+
+/* 主按钮样式覆盖 */
+.ant-btn.primary-btn {
+    background: #1890ff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 12px 28px;
+}
+
+.ant-btn.primary-btn:hover {
+    background: #40a9ff;
+    color: white;
+}
+
+.ant-btn.primary-btn:active {
+    background: #096dd9;
+    color: white;
+}
+
+.questions-container {
+    transform-origin: center top;
+    transform: scale(0.6);
+    margin-top: 24px;
+    background: white;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.07), 0px 41.7776px 33.4221px rgba(0, 0, 0, 0.0503198), 0px 22.3363px 17.869px rgba(0, 0, 0, 0.0417275), 0px 12.5216px 10.0172px rgba(0, 0, 0, 0.035), 0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0282725), 0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0196802);
+}
+
+.question {
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.underline {
+    margin: 0 4px;
+    width: 40px;
+    display: inline-block;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.45);
+}
+
+/* 保持其他样式不变 */
+.column-settings-row .column-settings input[type="number"] {
+    width: 40px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.column-settings-row {
+    display: none;
+    /* 默认隐藏列设置 */
+    padding: 4px;
+    gap: 20px;
+    flex-wrap: nowrap;
+    border: 1px solid #eee;
+    border-radius: 3px;
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 0.5cm;
+        /* 减小页边距 */
+    }
+
+    .settings-panel,
+    button {
+        display: none !important;
+        /* 使用 !important 确保打印时一定隐藏 */
+    }
+
+    .questions-container {
+        transform: scale(1.0);
+        margin-top: 0;
+        /* 移除设置面板后调整题目区域位置 */
+        background: white;
+        padding: 0px;
+        border-radius: 8px;
+        box-shadow: none;
+        page-break-after: avoid;
+        /* 防止容器后面出现分页 */
+        page-break-inside: avoid;
+        /* 防止容器内部出现分页 */
+        gap: 10px;
+        /* 减小列间距 */
+    }
+
+    .container {
+        margin: 0;
+        padding: 0;
+        max-height: 297mm;
+        /* A4 纸高度 */
+        overflow: hidden;
+        /* 超出部分隐藏 */
+    }
+
+    body {
+        margin: 0;
+        background-color: white;
+        /* 打印时使用白色背景 */
+    }
+}
+
+
+/* 大小比较设置样式 */
+.compare-settings {
+    margin-top: 8px;
+    border-top: 1px solid #eee;
+    padding-top: 0px;
+}
+
+.compare-left-section h4,
+.compare-right-section h4 {
+    color: #c5a456;
+    margin: 2px 0;
+}
+
+.left-ranges,
+.right-ranges {
+    margin: 10px 0;
+}
+
+.left-operators,
+.right-operators,
+.left-result-range,
+.right-result-range {
+    margin-top: 10px;
+}
+
+/* 大小比较符号样式 */
+.compare-symbol {
+    display: inline-block;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 50%;
+    margin: 0;
+    vertical-align: middle;
+}
+
+/* Ant Design 风格的下拉菜单 */
+.ant-select {
+    position: relative;
+    display: inline-block !important;
+    width: 100%;
+    max-width: 200px;
+}
+
+.ant-select select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 4px 8px;
+    padding-right: 30px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.85);
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.ant-select select:hover {
+    border-color: #40a9ff;
+}
+
+.ant-select select:focus {
+    border-color: #40a9ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    outline: none;
+}
+
+.ant-select::after {
+    content: '';
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid rgba(0, 0, 0, 0.65);
+    pointer-events: none;
+}
+
+/* 禁用状态 */
+.ant-select select:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.25);
+}
+
+/* 下拉选项样式 - 注意：这只在某些浏览器中有效 */
+.ant-select select option {
+    padding: 8px 12px;
+}
+
+/* 添加复制链接的样式 */
+.copy-link {
+    color: #d3d4d6;
+    ;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 8px;
+    text-decoration: underline;
+}
+
+.copy-link:hover {
+    color: #40a9ff;
+}
